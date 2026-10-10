@@ -1,7 +1,8 @@
 # 🛠️ Technical Report: Architecture, Algorithms & Implementation Specifications
 ## CareerPulse AI: Autonomous Multi-Agent & RAG-Powered Internship Lifecycle Platform
-**Infosys Springboard Virtual Internship — Applied Generative AI & Cloud-Native Engineering**  
+**Infosys Springboard Virtual Internship — Java Development Track**  
 **Document Classification**: Comprehensive Technical Design & Engineering Specification  
+**Internship Domain**: Java (Java Full-Stack Development & Enterprise Systems)  
 **Version**: 1.0.0 (Production Release)  
 **Author / Intern**: Lokeswar  
 **Date**: October 2026  
@@ -58,14 +59,15 @@
     - 10.3 [Fresh Account Zero-State Progression Validation](#103-fresh-account-zero-state-progression-validation)
 11. [Deployment Architecture, CI/CD & Cloud Infrastructure](#11-deployment-architecture-cicd--cloud-infrastructure)
 12. [Source Code Structural Mapping](#12-source-code-structural-mapping)
+13. [Technical Sign-Off & Verification](#13-technical-sign-off--verification)
 
 ---
 
 ## 1. Technical Abstract & Architectural Philosophy
 
-**CareerPulse AI** is engineered as a cloud-native, micro-modular web platform that bridges large language model (LLM) reasoning with deterministic software engineering. Modern LLMs deployed in isolation suffer from stochastic unpredictability, API rate-limit bottlenecks, token latency, and hallucinated factual claims.
+Developed under the **Infosys Springboard Virtual Internship — Java Development Track**, **CareerPulse AI** is engineered as a cloud-native, micro-modular web platform that bridges large language model (LLM) reasoning with deterministic software engineering. Modern LLMs deployed in isolation suffer from stochastic unpredictability, API rate-limit bottlenecks, token latency, and hallucinated factual claims.
 
-To overcome these enterprise constraints, CareerPulse AI is built on four core architectural tenets:
+Within enterprise Java software ecosystems, predictability, type-safety, and strict algorithmic verification are paramount. To align with these enterprise engineering standards, CareerPulse AI is built on four core architectural tenets:
 1. **Deterministic Grounding Over Unconstrained Generation**: All critical mathematical evaluations—such as job compatibility matching, vector cosine similarity, deadline urgency calculations, and candidate entity verification—are executed via deterministic algorithms with strictly defined mathematical invariants, using LLMs only for semantic understanding and natural-language structuring.
 2. **Sub-300ms Latency via Resilient Heuristic Fallbacks**: All generative services feature an embedded, sub-300ms heuristic fallback engine. If the primary LLM API (Google Gemini 1.5 Flash) returns HTTP 429 (quota exhaustion), HTTP 503, or network timeouts, the system transitions to deterministic heuristics with 0ms interruption.
 3. **Dual-Mode Persistence Architecture**: The database layer transparently interfaces with cloud-native Supabase Managed PostgreSQL in production environments while falling back to an in-memory SQLite (`sql.js`) engine in local or containerized environments.
@@ -131,12 +133,12 @@ sequenceDiagram
     participant LLM as Gemini / Fallback Engine
     participant DB as Dual-Mode Database
 
-    User->>API: POST /api/internships/search/semantic { query: "Computer Vision PyTorch" }
+    User->>API: POST /api/internships/search/semantic { query: "Java Spring Boot Microservices" }
     API->>RAG: searchSemantic(query, topK=5)
     RAG->>VS: calculateCosineSimilarity(queryEmbedding, 720 Chunks)
     VS-->>RAG: Sorted Chunks with Cosine Distance
     RAG->>DB: Fetch Full Internship Metadata by IDs
-    DB-->>RAG: Internship Records
+    DB-->>RAG: Internship Records (Java Enterprise Postings)
     RAG-->>API: Top 5 Relevant Internship Records
     API->>Agent: calculateCompatibility(studentProfile, selectedInternship)
     Agent->>Agent: Apply 5-Factor Weighted Formula (0.40, 0.25, 0.15, 0.10, 0.10)
@@ -151,13 +153,13 @@ sequenceDiagram
 ## 3. RAG Pipeline & Dense Vector Store Deep Dive
 
 ### 3.1 Internship Knowledge Base & 4-Way Semantic Chunking
-The knowledge base comprises **180 enterprise internship postings** spanning 6 technical disciplines (30 postings each):
-1. Artificial Intelligence & Machine Learning
-2. Cloud Computing & DevOps
-3. Full-Stack & Web Engineering
-4. Data Engineering & Analytics
-5. Mobile Application Development
-6. Cybersecurity & Systems Engineering
+The knowledge base comprises **180 enterprise internship postings** spanning 6 technical disciplines (30 postings each), with dedicated representation of the **Java & Enterprise Software Engineering domain**:
+1. **Java & Enterprise Software Engineering** (Java 17/21, Spring Boot, Spring Cloud, Hibernate, Microservices, REST APIs, Maven, JUnit)
+2. Cloud Computing & DevOps (Kubernetes, Docker, AWS, Terraform, CI/CD)
+3. Full-Stack & Web Engineering (React, Node.js, TypeScript, Next.js)
+4. Data Engineering & Analytics (Python Pandas, SQL, Spark, Kafka)
+5. Mobile Application Development (Flutter, React Native, Native Android)
+6. Cybersecurity & Systems Engineering (SOC Threat Hunting, AppSec, Networks)
 
 To maximize retrieval precision and eliminate chunk-boundary semantic loss, each posting is partitioned into **4 semantic chunk types**:
 - **Chunk 1 (`Overview & Responsibilities`)**: Captures high-level mission, engineering team context, and operational day-to-day responsibilities.
@@ -188,7 +190,7 @@ $$S = M \hat{q}^\top \quad \text{where } S \in \mathbb{R}^{720}$$
 The indices are subsequently ranked via a min-heap or partial sorting algorithm to extract the top-$K$ scoring postings in $\mathcal{O}(N \log K)$ time.
 
 ### 3.4 Information Retrieval Benchmarks (MRR, Top-1 Accuracy)
-The retrieval pipeline was subjected to automated benchmarking across 6 standardized student profiles representing distinct technical domains (AI/ML, Web, Cloud, Data, Cyber, Java):
+The retrieval pipeline was subjected to automated benchmarking across 6 standardized student profiles representing distinct technical domains (AI/ML, Web, Cloud, Data, Cyber, and **Java Enterprise Engineering**):
 
 - **Mean Reciprocal Rank (MRR)**:
   $$\text{MRR} = \frac{1}{|Q|} \sum_{i=1}^{|Q|} \frac{1}{\text{rank}_i} = \frac{1}{6} \left( \frac{1}{1} + \frac{1}{1} + \frac{1}{1} + \frac{1}{1} + \frac{1}{1} + \frac{1}{1} \right) = 1.000$$
@@ -331,7 +333,7 @@ The Customizer Agent optimizes resumes for corporate ATS systems while enforcing
 
 ### 5.4 Voice-Enabled Mock Interview Agent & 3D Rubric Scoring
 The Interview Preparation Agent produces role-specific interview questionnaires across **5 standardized categories**:
-1. *Technical Deep Dive* (e.g., data structures, API protocols, concurrency).
+1. *Technical Deep Dive* (e.g., Core Java collections, concurrency, Spring Boot dependency injection, API protocols).
 2. *Resume-Based Questions* (probing specific candidate project implementations).
 3. *Project Architectural Questions* (scaling, database choice trade-offs).
 4. *Scenario & Edge-Case Engineering* (production outage triage, debugging).
@@ -513,7 +515,7 @@ CREATE TABLE IF NOT EXISTS internships (
     company VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
     remote_type VARCHAR(50) NOT NULL,  -- 'Remote', 'Hybrid', 'On-site'
-    domain VARCHAR(100) NOT NULL,      -- AI/ML, Cloud, Full-Stack, Data, Mobile, Cyber
+    domain VARCHAR(100) NOT NULL,      -- Java, Cloud, Full-Stack, AI/ML, Data, Cyber
     description TEXT NOT NULL,
     responsibilities_json TEXT,        -- JSON Array of duties
     required_skills_json TEXT NOT NULL,-- JSON Array of mandatory skills
@@ -583,7 +585,7 @@ CREATE TABLE IF NOT EXISTS interview_sessions (
     {
       "name": "Distributed Task Queue",
       "description": "Engineered Redis-backed asynchronous worker system handling 5k req/sec.",
-      "technologies": ["Node.js", "Redis", "Docker", "Jest"],
+      "technologies": ["Java", "Spring Boot", "Redis", "Docker", "JUnit"],
       "github_url": "https://github.com/student/task-queue"
     }
   ]
@@ -591,10 +593,10 @@ CREATE TABLE IF NOT EXISTS interview_sessions (
 - **`swot_json` Structure**:
   ```json
   {
-    "strengths": ["Strong foundational proficiency in Python and data structures"],
+    "strengths": ["Strong foundational proficiency in Java, Spring Boot and data structures"],
     "weaknesses": ["Lack of containerization (Docker/Kubernetes) project proof"],
-    "opportunities": ["High enterprise demand for Cloud DevOps and AI engineering"],
-    "threats": ["Competitive applicant pool for specialized Generative AI positions"]
+    "opportunities": ["High enterprise demand for Java Enterprise and Cloud-Native engineering"],
+    "threats": ["Competitive applicant pool for specialized backend positions"]
   }
   ```
 
@@ -836,4 +838,8 @@ graph LR
 
 ## 13. Technical Sign-Off & Verification
 
-This Technical Report certifies that **CareerPulse AI** satisfies all architectural, algorithmic, performance, security, and testing requirements specified by the **Infosys Springboard Virtual Internship**. All 105 automated test assertions across Milestones 1 through 4 have passed with 100% compliance, and the cloud-native production deployment is verified live and operational.
+This Technical Report certifies that **CareerPulse AI** satisfies all architectural, algorithmic, performance, security, and testing requirements specified by the **Infosys Springboard Virtual Internship (Java Development Track)**. All 105 automated test assertions across Milestones 1 through 4 have passed with 100% compliance, and the cloud-native production deployment is verified live and operational.
+
+**Signed**,  
+Lokeswar  
+*Infosys Springboard Virtual Intern (Java Development Track, 2026)*
