@@ -28,22 +28,56 @@ router.post('/chat', authenticateToken, async (req, res) => {
       [req.user.id]
     );
 
-    let studentSkills = [];
+    const canonicalSkillMap = {
+      'javascript': 'JavaScript', 'js': 'JavaScript', 'typescript': 'TypeScript', 'ts': 'TypeScript',
+      'python': 'Python', 'java': 'Java', 'c': 'C', 'c++': 'C++', 'cpp': 'C++', 'c#': 'C#',
+      'go': 'Go', 'golang': 'Go', 'html': 'HTML', 'html5': 'HTML', 'css': 'CSS', 'css3': 'CSS',
+      'tailwind': 'Tailwind CSS', 'tailwind css': 'Tailwind CSS', 'react': 'React', 'react.js': 'React',
+      'reactjs': 'React', 'next.js': 'Next.js', 'nextjs': 'Next.js', 'node.js': 'Node.js', 'nodejs': 'Node.js',
+      'express': 'Express.js', 'express.js': 'Express.js', 'fastapi': 'FastAPI', 'flask': 'Flask',
+      'rest api': 'REST APIs', 'rest apis': 'REST APIs', 'sql': 'SQL', 'postgresql': 'PostgreSQL',
+      'postgres': 'PostgreSQL', 'sqlite': 'SQLite', 'mongodb': 'MongoDB', 'git': 'Git', 'github': 'GitHub',
+      'vscode': 'VS Code', 'vs code': 'VS Code', 'docker': 'Docker', 'kubernetes': 'Kubernetes',
+      'aws': 'AWS', 'gcp': 'Google Cloud', 'azure': 'Azure', 'machine learning': 'Machine Learning',
+      'generative ai': 'Generative AI', 'llms': 'LLMs', 'rag': 'RAG', 'multi-agent systems': 'Multi-Agent Systems',
+      'prompt engineering': 'Prompt Engineering', 'google gemini api': 'Google Gemini API',
+      'semantic search': 'Semantic Search', 'computer vision': 'Computer Vision', 'opencv': 'OpenCV',
+      'scipy': 'SciPy', 'data analytics': 'Data Analytics', 'data science': 'Data Science',
+      'data visualization': 'Data Visualization', 'postman': 'Postman', 'figma': 'Figma',
+      'agile': 'Agile Development', 'agile development': 'Agile Development', 'supabase': 'Supabase',
+      'vercel': 'Vercel', 'render': 'Render'
+    };
+
+    let rawSkills = [];
     if (profile && profile.technical_skills) {
-      try { studentSkills = JSON.parse(profile.technical_skills); } catch {}
+      try { rawSkills.push(...(JSON.parse(profile.technical_skills) || [])); } catch {}
     }
     if (latestResume && latestResume.detected_skills_json) {
       try {
         const resumeSkills = JSON.parse(latestResume.detected_skills_json);
-        const combined = [
+        rawSkills.push(
           ...(resumeSkills.programming || []),
           ...(resumeSkills.web || []),
           ...(resumeSkills.aiData || []),
           ...(resumeSkills.cloud || []),
           ...(resumeSkills.tools || [])
-        ];
-        studentSkills = Array.from(new Set([...studentSkills, ...combined]));
+        );
       } catch {}
+    }
+
+    const seenSkills = new Set();
+    const studentSkills = [];
+    for (const s of rawSkills) {
+      if (!s || typeof s !== 'string') continue;
+      const trimmed = s.trim();
+      if (!trimmed) continue;
+      const lower = trimmed.toLowerCase();
+      const canonical = canonicalSkillMap[lower] || (trimmed.charAt(0).toUpperCase() + trimmed.slice(1));
+      const key = canonical.toLowerCase();
+      if (!seenSkills.has(key)) {
+        seenSkills.add(key);
+        studentSkills.push(canonical);
+      }
     }
 
     const studentRoles = profile?.preferred_roles ? (typeof profile.preferred_roles === 'string' ? JSON.parse(profile.preferred_roles) : profile.preferred_roles) : [];

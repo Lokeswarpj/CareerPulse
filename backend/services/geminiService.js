@@ -1,13 +1,22 @@
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Ensure .env is loaded from backend directory or project root
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
 const GEMINI_MODELS = [
-  'gemini-flash-lite-latest',
-  'gemini-3.5-flash',
   'gemini-3.5-flash-lite',
+  'gemini-3.5-flash',
+  'gemini-2.5-flash',
   'gemini-3-flash-preview',
-  'gemini-3.1-flash-lite'
+  'gemini-flash-lite-latest'
 ];
 
 /**
@@ -20,7 +29,7 @@ export async function callGemini(prompt, systemInstruction = '', jsonFormat = tr
   }
 
   const startTime = Date.now();
-  const totalBudgetMs = options.timeoutMs || 9000;
+  const totalBudgetMs = options.timeoutMs || 15000;
   const maxOutputTokens = options.maxOutputTokens || (jsonFormat ? 1500 : 2000);
 
   for (let i = 0; i < GEMINI_MODELS.length; i++) {
@@ -29,7 +38,7 @@ export async function callGemini(prompt, systemInstruction = '', jsonFormat = tr
     if (remainingMs < 1000) break; // Exhausted caller time budget, break to heuristic fallback
 
     const model = GEMINI_MODELS[i];
-    const timeoutMs = Math.min(remainingMs, i === 0 ? remainingMs : 4500);
+    const timeoutMs = Math.min(remainingMs, i === 0 ? remainingMs : 6000);
 
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
