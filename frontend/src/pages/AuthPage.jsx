@@ -58,7 +58,7 @@ export default function AuthPage({ onSuccess, authMode = 'login', setAuthMode })
   const [phone, setPhone] = useState('');
   const [university, setUniversity] = useState('');
   const [degree, setDegree] = useState('');
-  const [graduationYear, setGraduationYear] = useState('2026');
+  const [graduationYear, setGraduationYear] = useState('');
   const [location, setLocation] = useState('');
   const [technicalSkills, setTechnicalSkills] = useState('');
 
@@ -910,16 +910,21 @@ export default function AuthPage({ onSuccess, authMode = 'login', setAuthMode })
                   <select
                     className="form-input"
                     value={graduationYear}
-                    onChange={(e) => setGraduationYear(e.target.value)}
+                    onChange={(e) => {
+                      setGraduationYear(e.target.value);
+                      if (gradYearError) setGradYearError('');
+                    }}
                     style={{ paddingLeft: '2.3rem' }}
                     required
                   >
+                    <option value="" disabled>Select Graduation Year</option>
                     {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map(yr => (
                       <option key={yr} value={yr}>{yr}</option>
                     ))}
                   </select>
                   <Calendar size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                 </div>
+                {gradYearError && <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>{gradYearError}</span>}
               </div>
 
               {/* Current Location / City * */}

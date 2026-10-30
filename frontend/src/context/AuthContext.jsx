@@ -28,6 +28,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const data = await api.login({ email, password });
     localStorage.setItem('careerpulse_token', data.token);
+    sessionStorage.removeItem('careerpulse_is_new_user');
     setUser(data.user);
     return data;
   };
@@ -35,7 +36,8 @@ export function AuthProvider({ children }) {
   const register = async (email, password, fullName, profileData = {}) => {
     const data = await api.register({ email, password, full_name: fullName, ...profileData });
     localStorage.setItem('careerpulse_token', data.token);
-    setUser(data.user);
+    sessionStorage.setItem('careerpulse_is_new_user', 'true');
+    setUser({ ...data.user, is_new_user: true });
     if (data.token && profileData && Object.keys(profileData).length > 0) {
       try {
         await api.updateProfile(profileData);
@@ -49,6 +51,9 @@ export function AuthProvider({ children }) {
   const googleLogin = async (payload) => {
     const data = await api.googleLogin(payload);
     localStorage.setItem('careerpulse_token', data.token);
+    if (payload.profileData && Object.keys(payload.profileData).length > 0) {
+      sessionStorage.setItem('careerpulse_is_new_user', 'true');
+    }
     setUser(data.user);
     if (data.token && payload.profileData && Object.keys(payload.profileData).length > 0) {
       try {

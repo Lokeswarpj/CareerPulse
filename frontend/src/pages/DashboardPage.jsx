@@ -79,6 +79,12 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
     ? Math.round(completedSessions.reduce((acc, s) => acc + (s.overall_score || 0), 0) / completedSessions.length)
     : null;
 
+  // Distinguish newly created accounts from returning users
+  const isNewAccount = user?.is_new_user || 
+                       sessionStorage.getItem('careerpulse_is_new_user') === 'true' || 
+                       (!resume && sessions.length === 0);
+  const greeting = isNewAccount ? 'Welcome' : 'Welcome back';
+
   return (
     <div className="container" style={{ padding: '2.5rem 1.5rem' }}>
       
@@ -99,7 +105,7 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
               <span className="badge badge-emerald">Active Session</span>
             </div>
             <h1 style={{ fontSize: '2.2rem', fontWeight: 800, marginBottom: '0.5rem' }}>
-              Welcome back, <span className="gradient-text">{user?.full_name || 'Student'}</span> 👋
+              {greeting}, <span className="gradient-text">{user?.full_name || 'Student'}</span> 👋
             </h1>
             <p style={{ color: 'var(--text-secondary)', maxWidth: '620px', fontSize: '0.95rem' }}>
               {profile?.degree 
