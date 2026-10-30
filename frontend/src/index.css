@@ -231,6 +231,33 @@ button, input, select, textarea {
   background: #ffe4e6;
 }
 
+/* Google Authentication Button */
+.btn-google {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.btn-google:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+[data-theme="dark"] .btn-google {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f9fafb;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .btn-google:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #ffffff;
+}
+
 [data-theme="dark"] .btn-secondary {
   background: var(--bg-tertiary);
   color: var(--text-primary);

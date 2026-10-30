@@ -556,7 +556,7 @@ export default function AuthPage({ onSuccess, authMode = 'login', setAuthMode })
               type="button"
               onClick={handleGoogleClick}
               disabled={googleLoading || loading}
-              className="glass-panel"
+              className="btn btn-google"
               style={{
                 width: '100%',
                 display: 'flex',
@@ -564,24 +564,10 @@ export default function AuthPage({ onSuccess, authMode = 'login', setAuthMode })
                 justifyContent: 'center',
                 gap: '0.75rem',
                 padding: '0.75rem 1rem',
-                background: '#ffffff',
-                border: '1px solid var(--border-card)',
                 borderRadius: 'var(--radius-md)',
-                color: 'var(--text-primary)',
-                fontWeight: 600,
                 fontSize: '0.92rem',
                 cursor: 'pointer',
-                transition: 'all 0.2s',
-                boxShadow: '0 1px 3px rgba(15, 23, 42, 0.05)',
                 marginBottom: '1.25rem'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--bg-tertiary)';
-                e.currentTarget.style.borderColor = 'var(--accent-primary)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = '#ffffff';
-                e.currentTarget.style.borderColor = 'var(--border-card)';
               }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24">
@@ -1040,7 +1026,7 @@ export default function AuthPage({ onSuccess, authMode = 'login', setAuthMode })
             style={{
               width: '100%',
               maxWidth: '460px',
-              background: '#ffffff',
+              background: 'var(--bg-card)',
               borderRadius: '20px',
               border: '1px solid var(--border-card)',
               boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.15)',
