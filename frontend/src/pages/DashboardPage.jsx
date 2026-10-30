@@ -86,8 +86,7 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
       <div className="glass-panel" style={{
         padding: '2.5rem',
         marginBottom: '2rem',
-        background: 'linear-gradient(135deg, rgba(255, 225, 124, 0.22) 0%, rgba(248, 249, 250, 0.95) 100%)',
-        border: '1px solid rgba(23, 30, 25, 0.12)',
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(6, 182, 212, 0.08) 100%)',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -145,7 +144,7 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
         <div className="glass-panel" style={{ padding: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>CAREER READINESS</span>
-            <div style={{ padding: '0.5rem', borderRadius: '8px', background: 'rgba(23, 30, 25, 0.08)', color: 'var(--accent-primary)' }}>
+            <div style={{ padding: '0.5rem', borderRadius: '8px', background: 'rgba(79, 70, 229, 0.12)', color: 'var(--accent-primary)' }}>
               <TrendingUp size={18} />
             </div>
           </div>
@@ -153,7 +152,7 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
             {readinessPercent}%
           </div>
           <div style={{ width: '100%', height: '6px', background: 'var(--bg-tertiary)', borderRadius: '3px', marginTop: '0.75rem', overflow: 'hidden' }}>
-            <div style={{ width: `${readinessPercent}%`, height: '100%', background: 'linear-gradient(90deg, #171e19, #107e54)', borderRadius: '3px' }} />
+            <div style={{ width: `${readinessPercent}%`, height: '100%', background: 'linear-gradient(90deg, #6366f1, #10b981)', borderRadius: '3px' }} />
           </div>
           <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>
             {completedCount} of {completenessChecks.length} milestones completed
@@ -256,8 +255,8 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
                   width: '48px',
                   height: '48px',
                   borderRadius: '50%',
-                  background: 'rgba(23, 30, 25, 0.06)',
-                  color: '#171e19',
+                  background: 'rgba(99, 102, 241, 0.1)',
+                  color: '#818cf8',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -294,7 +293,7 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '0.85rem',
-                    borderLeft: `4px solid ${rec.matchScore >= 80 ? '#107e54' : rec.matchScore >= 60 ? '#171e19' : '#d97706'}`
+                    borderLeft: `4px solid ${rec.matchScore >= 80 ? '#10b981' : rec.matchScore >= 60 ? '#6366f1' : '#f59e0b'}`
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
@@ -311,12 +310,12 @@ export default function DashboardPage({ setActiveTab, setSelectedInternshipId })
                     <div style={{
                       padding: '0.45rem 0.85rem',
                       borderRadius: 'var(--radius-md)',
-                      background: rec.matchScore >= 80 ? 'rgba(16, 126, 84, 0.12)' : 'rgba(255, 225, 124, 0.35)',
-                      border: `1px solid ${rec.matchScore >= 80 ? 'rgba(16, 126, 84, 0.3)' : 'rgba(23, 30, 25, 0.2)'}`,
+                      background: rec.matchScore >= 80 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(99, 102, 241, 0.15)',
+                      border: `1px solid ${rec.matchScore >= 80 ? 'rgba(16, 185, 129, 0.3)' : 'rgba(99, 102, 241, 0.3)'}`,
                       textAlign: 'right'
                     }}>
                       <div style={{
-                        color: rec.matchScore >= 80 ? '#107e54' : '#171e19',
+                        color: rec.matchScore >= 80 ? 'var(--accent-emerald)' : 'var(--accent-primary)',
                         fontWeight: 900,
                         fontSize: '1.05rem',
                         lineHeight: 1

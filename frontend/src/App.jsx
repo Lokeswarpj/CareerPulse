@@ -30,8 +30,8 @@ function PageLoader() {
       <div style={{
         width: '36px',
         height: '36px',
-        border: '3px solid rgba(23, 30, 25, 0.15)',
-        borderTopColor: '#171e19',
+        border: '3px solid rgba(99, 102, 241, 0.2)',
+        borderTopColor: '#6366f1',
         borderRadius: '50%',
         animation: 'spin 0.7s linear infinite'
       }} />
@@ -118,14 +118,19 @@ export default function App() {
     localStorage.setItem('careerpulse_sidebar_collapsed', isSidebarCollapsed.toString());
   }, [isSidebarCollapsed]);
 
-  // Permanently enforce light presentation theme & purge any legacy dark preference from storage
+  // Theme Management (Defaulting to light presentation mode)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('careerpulse_theme') || 'light';
+  });
+
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', 'light');
-    try {
-      localStorage.removeItem('careerpulse_theme');
-      localStorage.setItem('careerpulse_theme', 'light');
-    } catch (_) {}
-  }, []);
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('careerpulse_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   // Navigate helper to keep state, localStorage, and URL hash in 100% sync
   const handleNavigate = (tab) => {
@@ -257,6 +262,8 @@ export default function App() {
           isSidebarCollapsed={isSidebarCollapsed}
           setIsSidebarCollapsed={setIsSidebarCollapsed}
           setAuthMode={setAuthMode}
+          theme={theme}
+          toggleTheme={toggleTheme}
         />
       </div>
 

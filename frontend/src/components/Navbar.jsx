@@ -3,16 +3,19 @@ import { useAuth } from '../context/AuthContext';
 import { 
   Sparkles, 
   LogIn, 
-  UserPlus 
+  UserPlus,
+  Sun,
+  Moon
 } from 'lucide-react';
-import brandLogo from '../assets/careerpulse_logo.png';
 
 export default function Navbar({ 
   activeTab, 
   setActiveTab, 
   isSidebarCollapsed, 
   setIsSidebarCollapsed, 
-  setAuthMode
+  setAuthMode,
+  theme = 'light',
+  toggleTheme
 }) {
   const { isAuthenticated } = useAuth();
 
@@ -58,22 +61,21 @@ export default function Navbar({
               style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', cursor: 'pointer' }}
             >
               <img 
-                src={brandLogo} 
+                src="/careerpulse_logo.png" 
                 alt="CareerPulse AI Logo" 
                 style={{
                   width: '2.4rem',
                   height: '2.4rem',
                   borderRadius: '10px',
                   objectFit: 'cover',
-                  boxShadow: '0 2px 10px rgba(23, 30, 25, 0.12)',
+                  boxShadow: '0 2px 10px rgba(79, 70, 229, 0.25)',
                   border: '1px solid var(--border-subtle)'
                 }}
               />
               <div>
                 <div style={{ fontSize: '1.2rem', fontWeight: 800, letterSpacing: '-0.02em', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <span>CareerPulse</span>
-                  <span style={{ color: '#171e19', fontWeight: 900 }}>AI</span>
-                  <span style={{ color: '#ffe17c', fontSize: '1.35rem', lineHeight: 1 }}>.</span>
+                  <span className="gradient-text">AI</span>
                 </div>
               </div>
             </div>
@@ -83,6 +85,37 @@ export default function Navbar({
         {/* Right Side: Header actions based on page context */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           
+          {/* Quick Theme Switcher Pill (Presentation Light / Dark) */}
+          {toggleTheme && (
+            <button
+              onClick={toggleTheme}
+              className="btn btn-outline btn-sm"
+              title={theme === 'dark' ? 'Switch to Light Presentation Mode' : 'Switch to Dark Mode'}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.35rem 0.65rem',
+                borderRadius: 'var(--radius-md)',
+                borderColor: 'var(--border-card)',
+                background: 'var(--bg-secondary)',
+                fontSize: '0.78rem'
+              }}
+            >
+              {theme === 'dark' ? (
+                <>
+                  <Sun size={15} color="#fbbf24" />
+                  <span style={{ fontWeight: 600 }}>Light UI</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={15} color="var(--accent-primary)" />
+                  <span style={{ fontWeight: 600 }}>Dark UI</span>
+                </>
+              )}
+            </button>
+          )}
+
           {isLanding ? (
             isAuthenticated ? (
               <button 
@@ -92,37 +125,30 @@ export default function Navbar({
                   display: 'flex', 
                   alignItems: 'center', 
                   gap: '0.45rem',
-                  fontWeight: 700,
-                  borderRadius: 'var(--radius-full)',
-                  padding: '0.45rem 1.15rem'
+                  fontWeight: 700
                 }}
               >
-                <Sparkles size={15} color="#171e19" />
+                <Sparkles size={15} />
                 <span>Go to Dashboard →</span>
               </button>
             ) : (
               <>
-                {/* Sign Up Button (Pill in #171e19 charcoal with white text & yellow accent) */}
+                {/* Sign Up Button (Left of Log In) */}
                 <button 
-                  className="btn btn-sm"
+                  className="btn btn-primary btn-sm"
                   onClick={handleOpenRegister}
                   style={{ 
                     display: 'flex', 
                     alignItems: 'center', 
                     gap: '0.45rem',
-                    fontWeight: 700,
-                    background: '#171e19',
-                    color: '#ffffff',
-                    borderRadius: 'var(--radius-full)',
-                    padding: '0.45rem 1.25rem',
-                    boxShadow: '0 2px 8px rgba(23, 30, 25, 0.2)'
+                    fontWeight: 700
                   }}
                 >
-                  <UserPlus size={15} color="#ffe17c" />
+                  <UserPlus size={15} />
                   <span>Sign Up</span>
                 </button>
 
-                {/* Log In Button (Text/Outline in #171e19) */}
+                {/* Log In Button (Right of Sign Up) */}
                 <button 
                   className="btn btn-outline btn-sm"
                   onClick={handleOpenLogin}
@@ -131,13 +157,10 @@ export default function Navbar({
                     alignItems: 'center', 
                     gap: '0.45rem',
                     borderColor: 'var(--border-card)',
-                    color: '#171e19',
-                    fontWeight: 600,
-                    borderRadius: 'var(--radius-full)',
-                    padding: '0.45rem 1.15rem'
+                    fontWeight: 600
                   }}
                 >
-                  <LogIn size={15} color="#171e19" />
+                  <LogIn size={15} color="var(--accent-primary)" />
                   <span>Log In</span>
                 </button>
               </>
